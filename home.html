@@ -2,8 +2,16 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title> Home-Video Capture</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script>
-        var constraints = { audio: false, video: { width: 1280, height: 720 } };
+        $( document ).ready(function() {
+    console.log( "ready!" );
+
+    var constraints = { audio: false, video: { width: 1280, height: 720 } };
+    var video = document.querySelector('video');
+    var canvas = document.querySelector('canvas');
+    var context = canvas.getContext("2d");
+        
         navigator.mediaDevices.getUserMedia(constraints).then(function(mediaStream) {
             var video = document.querySelector('video');
             video.srcObject = mediaStream;
@@ -12,12 +20,20 @@
             };
         })
         .catch(function(err) {console.log(err.name + ":" + err.message);});           
+    
+        timer = setInterval(
+            function () {
+                context.drawImage(video, 0, 0, 320, 240);
+            }, 250);
+});
+        
     </script>
 </head>
 <body>
     Hello World !
     <div>
-        <video id = "live" width ="320" height = "240" autoplay></video>
+        <video id="live" width="320" height="240" autoplay style="display: inline;"></video>
+        <canvas width="320" id="canvas" height="240" style="display: inline;"></canvas>
     </div>
     Hello World !
 </body>
